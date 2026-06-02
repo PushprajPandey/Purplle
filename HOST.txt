@@ -1,0 +1,125 @@
+================================================================================
+STORE INTELLIGENCE — HOW TO HOST (FREE TIERS ONLY)
+================================================================================
+
+Railway: NOT recommended — the free plan has ended (paid only).
+
+This repo is ready for GitHub. The API ships with demo data in deploy/data/
+(store layout, POS CSV, ~310 seeded events). On first start, events load into
+SQLite automatically if the database is empty.
+
+WHAT GETS HOSTED
+----------------
+- FastAPI API + web dashboard (frontend/ served at /)
+- NOT hosted on free tiers: YOLO/CCTV processing (too heavy). Run pipeline
+  locally, then POST to /events/ingest or commit updated events_seed.jsonl.
+
+GITHUB UPLOAD
+-------------
+1. Create a new repo on GitHub (e.g. store-intelligence).
+2. From this folder:
+
+   cd D:\purplle\store-intelligence
+   git init
+   git add .
+   git commit -m "Store Intelligence: API, dashboard, pipeline, deploy bundle"
+   git branch -M main
+   git remote add origin https://github.com/YOUR_USER/store-intelligence.git
+   git push -u origin main
+
+3. Do NOT commit: .env, *.mp4, *.pt, pipeline/events_output.jsonl (see .gitignore).
+
+OPTION A — RENDER.COM (recommended, free web service)
+-----------------------------------------------------
+Free tier: 750 instance hours/month, sleeps after 15 min idle, cold starts.
+
+1. Push repo to GitHub.
+2. https://dashboard.render.com → New → Web Service → Connect repo.
+3. Runtime: Docker (uses Dockerfile in repo root).
+4. Plan: Free.
+5. Environment variables (optional):
+   DATA_DIR=/app/deploy/data
+   CORS_ORIGINS=*
+6. Deploy. Open the URL → dashboard at / and /docs for API.
+
+render.yaml in the repo can be used for Blueprint deploy.
+
+OPTION B — KOYEB.COM (free tier)
+--------------------------------
+1. Push to GitHub.
+2. https://app.koyeb.com → Create App → GitHub → Dockerfile.
+3. Port 8000, health check path /health.
+4. Free tier has resource limits; good for demo API + dashboard.
+
+OPTION C — FLY.IO (free allowance)
+----------------------------------
+1. Install flyctl: https://fly.io/docs/getting-started/installing-flyctl/
+2. fly auth login
+3. cd store-intelligence
+4. fly launch --no-deploy   (pick region, do not add Postgres)
+5. fly deploy
+6. fly open
+
+Free shared-cpu VMs have monthly limits; fine for demos.
+
+OPTION D — ORACLE CLOUD “ALWAYS FREE” VPS (best if you need 24/7 awake)
+-----------------------------------------------------------------------
+Always-free ARM VM (no sleep). More setup, fully free.
+
+1. Create VM (Ubuntu), open port 8000 in security list (or use nginx on 80).
+2. SSH in, install Docker, clone repo, run:
+
+   cd store-intelligence
+   docker compose -f docker-compose.yml up --build -d
+
+   Or without Docker:
+   pip install -r requirements-api.txt
+   export DATA_DIR=$(pwd)/deploy/data
+   uvicorn app.main:app --host 0.0.0.0 --port 8000
+
+OPTION E — HUGGING FACE SPACES (Docker space, free)
+---------------------------------------------------
+1. New Space → Docker SDK.
+2. Push this repo (or subset) and use Dockerfile.
+3. Set DATA_DIR=/app/deploy/data in Space secrets/env.
+
+OPTION F — GOOGLE CLOUD RUN (free tier with limits)
+---------------------------------------------------
+1. gcloud builds submit --tag gcr.io/PROJECT/store-intelligence
+2. gcloud run deploy --image ... --allow-unauthenticated --port 8000
+3. Ephemeral disk: DB re-seeds from events_seed.jsonl on cold start (built-in).
+
+LOCAL DOCKER (same as production image)
+---------------------------------------
+  cd store-intelligence
+  docker build -t store-intelligence .
+  docker run -p 8000:8000 -e DATA_DIR=/app/deploy/data store-intelligence
+
+  Open http://localhost:8000/
+
+CORS
+----
+Default: CORS_ORIGINS=* (dashboard and API on same origin — no issue).
+
+If you host the frontend on another domain (e.g. GitHub Pages) calling a remote API:
+
+  CORS_ORIGINS=https://your-user.github.io,https://your-api.onrender.com
+
+ERROR RESPONSES
+---------------
+All errors return JSON: { "error", "message", "trace_id", "status_code" }
+Header: X-Trace-Id on every response.
+
+HEALTH CHECK
+------------
+GET /health — use for Render/Koyeb/Fly health checks.
+
+RE-SEED AFTER PIPELINE RUN (local)
+----------------------------------
+1. Run pipeline locally → pipeline/events_output.jsonl
+2. Copy to deploy/data/events_seed.jsonl
+3. Delete DB or redeploy; restart API to ingest empty DB
+
+Or POST events: python pipeline/ingest_events.py --api https://YOUR_HOST/events/ingest
+
+================================================================================

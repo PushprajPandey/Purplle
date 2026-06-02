@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+.env
+.env.local
+*.egg-info/
+dist/
+build/
+
+# Tests & coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Thumbs.db
+
+# ML / pipeline outputs (large; regenerate locally)
+*.pt
+yolov8*.pt
+pipeline/events_output.jsonl
+runs/
+weights/
+
+# SQLite (regenerated from events_seed.jsonl on deploy)
+**/store_intelligence.db
+deploy/data/store_intelligence.db
+
+# CCTV footage (never commit — place under DATA_DIR locally)
+*.mp4
+*.avi
+*.mkv
+
+# OS / logs
+*.log
+nul
+
+# Optional local data mount (parent folder is not part of this repo)
+../Brigade*.csv

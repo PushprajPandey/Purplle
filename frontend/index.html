@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Store Intelligence — Live Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <div>
+            <h1>Store Intelligence</h1>
+            <p class="subtitle">Offline conversion &amp; floor analytics</p>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <label class="store-select">
+            <span>Store</span>
+            <select id="storeSelect" aria-label="Select store"></select>
+          </label>
+          <span class="refresh-pill" id="refreshStatus">Connecting…</span>
+          <a class="link-api" href="/docs" target="_blank" rel="noopener">API docs</a>
+        </div>
+      </header>
+
+      <section class="health-banner" id="healthBanner" role="status"></section>
+
+      <section class="kpi-grid" id="kpiGrid" aria-label="Key metrics"></section>
+
+      <div class="main-grid">
+        <section class="panel funnel-panel">
+          <div class="panel-head">
+            <h2>Conversion funnel</h2>
+            <p class="panel-hint">Session-based drop-off from entry to purchase</p>
+          </div>
+          <div class="funnel-chart" id="funnelChart"></div>
+        </section>
+
+        <section class="panel heatmap-panel">
+          <div class="panel-head">
+            <h2>Zone heatmap</h2>
+            <p class="panel-hint" id="heatmapConfidence">Visit frequency &amp; dwell</p>
+          </div>
+          <div class="heatmap-grid" id="heatmapGrid"></div>
+        </section>
+      </div>
+
+      <section class="panel anomalies-panel">
+        <div class="panel-head">
+          <h2>Active anomalies</h2>
+          <p class="panel-hint">Operational alerts for floor staff</p>
+        </div>
+        <ul class="anomaly-list" id="anomalyList"></ul>
+      </section>
+
+      <footer class="footer">
+        <span id="lastUpdated">—</span>
+        <span class="footer-sep">·</span>
+        <span class="footer-note">Terminal dashboard: <code>python dashboard/live.py</code></span>
+      </footer>
+    </div>
+    <script src="/static/js/app.js"></script>
+  </body>
+</html>

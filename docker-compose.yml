@@ -1,0 +1,13 @@
+services:
+  api:
+    build: .
+    container_name: store-intelligence-api
+    ports:
+      - "8000:8000"
+    environment:
+      DATA_DIR: ${DATA_DIR:-/app/deploy/data}
+      CORS_ORIGINS: ${CORS_ORIGINS:-*}
+      PORT: "8000"
+    # Local CCTV + full D:\purplle data: set HOST_DATA_DIR and DATA_DIR=/data
+    # volumes:
+    #   - D:/purplle:/data

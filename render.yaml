@@ -1,0 +1,15 @@
+# Render.com — free Web Service (spins down after ~15 min idle; cold start ~30–60s)
+# https://render.com/docs/free
+services:
+  - type: web
+    name: store-intelligence
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: DATA_DIR
+        value: /app/deploy/data
+      - key: CORS_ORIGINS
+        value: "*"
+      - key: PYTHONPATH
+        value: /app
