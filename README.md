@@ -5,7 +5,22 @@
 **North star metric:** Offline store conversion rate = unique visitors who purchased ÷ total unique visitors.
 
 ---
-
+ 
+## Live Hosted Demo
+ 
+| Resource | URL |
+|----------|-----|
+| **Web Dashboard** | **[https://purplle-kjea.onrender.com/](https://purplle-kjea.onrender.com/)** |
+| Swagger / API Docs | [https://purplle-kjea.onrender.com/docs](https://purplle-kjea.onrender.com/docs) |
+| Health Check | [https://purplle-kjea.onrender.com/health](https://purplle-kjea.onrender.com/health) |
+| Store Metrics | [https://purplle-kjea.onrender.com/stores/STORE_BLR_002/metrics](https://purplle-kjea.onrender.com/stores/STORE_BLR_002/metrics) |
+| Conversion Funnel | [https://purplle-kjea.onrender.com/stores/STORE_BLR_002/funnel](https://purplle-kjea.onrender.com/stores/STORE_BLR_002/funnel) |
+| Zone Heatmap | [https://purplle-kjea.onrender.com/stores/STORE_BLR_002/heatmap](https://purplle-kjea.onrender.com/stores/STORE_BLR_002/heatmap) |
+| Anomalies | [https://purplle-kjea.onrender.com/stores/STORE_BLR_002/anomalies](https://purplle-kjea.onrender.com/stores/STORE_BLR_002/anomalies) |
+ 
+ 
+---
+---
 ## Table of Contents
 
 - [Quick Start](#quick-start)
@@ -61,15 +76,6 @@ Then feed it footage (see [Running the Detection Pipeline](#running-the-detectio
 📊 Live Dashboard           Web UI at /  ·  Rich terminal via dashboard/live.py
 ```
 
-| Part | What's Built | Points |
-|------|-------------|--------|
-| A — Detection Pipeline | YOLOv8 + ByteTrack, Re-ID, staff exclusion, group/re-entry handling | 30 |
-| B — Intelligence API | 6 endpoints, funnel, heatmap, anomaly detection | 35 |
-| C — Production Readiness | Docker, structured logs, idempotent ingest, tests | 20 |
-| D — AI Engineering | DESIGN.md, CHOICES.md, prompt blocks in tests | 15 |
-| E — Live Dashboard (bonus) | Web UI + terminal dashboard, real-time updates | +10 |
-
----
 
 ## Running the Detection Pipeline
 
@@ -136,7 +142,6 @@ The API auto-seeds demo data from `deploy/data/events_seed.jsonl` on first start
 
 ## Live Dashboard
 
-### Web UI (Part E — bonus)
 
 Open **[http://localhost:8000/](http://localhost:8000/)** after `docker compose up`.
 
@@ -340,31 +345,6 @@ Each test file includes a `# PROMPT:` / `# CHANGES MADE:` block at the top docum
 
 ---
 
-## Deployment
-
-See **[HOST.txt](HOST.txt)** for full hosting instructions (Render, Koyeb, Fly.io, Oracle Always Free, Hugging Face Spaces, Google Cloud Run).
-
-**Recommended: Render.com (free web service)**
-
-```bash
-# 1. Push to GitHub
-git init && git add . && git commit -m "Store Intelligence"
-git remote add origin https://github.com/YOUR_USER/store-intelligence.git
-git push -u origin main
-
-# 2. Render dashboard → New → Web Service → Connect repo
-#    Runtime: Docker | Plan: Free
-#    Environment variables:
-#      DATA_DIR = /app/deploy/data
-#      CORS_ORIGINS = *
-```
-
-The repo includes `render.yaml` for Blueprint deploy. Demo data in `deploy/data/` seeds automatically on first start.
-
-> Railway free tier is not available — that plan has ended.
-
----
-
 ## Project Layout
 
 ```
@@ -402,7 +382,6 @@ store-intelligence/
 ├── requirements.txt       # Full (pipeline + API)
 ├── requirements-api.txt   # API only (used in Docker image)
 ├── render.yaml            # Render Blueprint deploy config
-└── HOST.txt               # Free hosting options and instructions
 ```
 
 ---
