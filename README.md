@@ -42,7 +42,7 @@
 Five commands from zero to running API with live dashboard:
 
 ```bash
-git clone https://github.com/YOUR_USER/store-intelligence.git
+git clone https://github.com/PushprajPandey/Purplle.git
 cd store-intelligence
 pip install -r requirements.txt
 docker compose up --build
